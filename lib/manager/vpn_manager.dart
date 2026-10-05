@@ -1,0 +1,60 @@
+import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/enum/enum.dart';
+import 'package:fl_clash/models/models.dart';
+import 'package:fl_clash/providers/action.dart';
+import 'package:fl_clash/providers/state.dart';
+import 'package:fl_clash/state.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class VpnManager extends ConsumerStatefulWidget {
+  final Widget child;
+
+  const VpnManager({super.key, required this.child});
+
+  @override
+  ConsumerState<VpnManager> createState() => _VpnContainerState();
+}
+
+class _VpnContainerState extends ConsumerState<VpnManager> {
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(vpnOptionsProvider, (prev, next) {
+      if (prev != next) {
+        showTip(next);
+      }
+    });
+  }
+
+  void showTip(VpnOptions? options) {
+    throttler.call(
+      FunctionTag.vpnTip,
+      () {
+        if (!ref.read(isStartProvider) ||
+            options == globalState.lastVpnOptions) {
+          return;
+        }
+        dialogs.showNotifier(
+          currentAppLocalizations.vpnConfigChangeDetected,
+          level: MessageLevel.warning,
+          actionState: MessageActionState(
+            actionText: currentAppLocalizations.restart,
+            action: () async {
+              final setupAction = ref.read(setupActionProvider.notifier);
+              await setupAction.setRunning(false);
+              await setupAction.setRunning(true);
+            },
+          ),
+        );
+      },
+      duration: const Duration(seconds: 10),
+      fire: true,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+}
