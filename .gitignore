@@ -45,8 +45,6 @@ app.*.map.json
 .claude/settings.local.json
 .claude/worktrees/
 
-# Documentation (generated/planning artifacts)
-docs/
 
 
 # Android Studio will place build artifacts here
@@ -87,3 +85,10 @@ devtools_options.yaml
 /coverage/lcov.info
 # Widget Preview related
 .widget_preview/
+
+# Signing material never enters the repository.
+*.jks
+*.keystore
+key.properties
+google-services.json
+GoogleService-Info.plist

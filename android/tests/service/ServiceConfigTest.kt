@@ -37,7 +37,7 @@ class ServiceConfigTest {
     fun `notification params default to the app name and disabled traffic details`() {
         val defaults = NotificationParams()
 
-        assertEquals("FlClash", defaults.title)
+        assertEquals("TENVPN", defaults.title)
         assertEquals(false, defaults.onlyStatisticsProxy)
         assertEquals(true, defaults.showStopAction)
         assertEquals(false, defaults.networkSpeedNotification)

@@ -4,7 +4,7 @@ import cc.chenx.flclash.service.models.VpnOptions
 import com.google.gson.annotations.SerializedName
 
 data class SharedState(
-    val currentProfileName: String = "FlClash",
+    val currentProfileName: String = "TENVPN",
     val onlyStatisticsProxy: Boolean = false,
     val showStopAction: Boolean = true,
     val networkSpeedNotification: Boolean = false,

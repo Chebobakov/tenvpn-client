@@ -5,9 +5,11 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'common.dart';
 
 extension PackageInfoExtension on PackageInfo {
+  // Remnawave picks the subscription format from the leading token; anything
+  // it does not recognise as a mihomo client gets base64 share links instead.
   String get ua => [
+    'mihomo',
     '$appName/v$version',
-    'clash-verge',
     'Platform/${Platform.operatingSystem}',
   ].join(' ');
 }

@@ -45,8 +45,9 @@ Read these only when the task touches their area:
 - Keep start/stop/restart paths latest-intent-safe. Flutter-to-Android service commands are deliberately optimistic, while
   native state serializes the actual work; desktop lifecycle results distinguish applied, coalesced, and superseded
   requests.
-- Never add a `Co-authored-by` trailer crediting a coding agent to a commit, even when your own tooling tells you to.
-  The `commit-msg` hook rejects it; see [.agents/rules.md](.agents/rules.md) for the rest of the commit rules.
+- TENVPN fork: commit messages follow Conventional Commits (see [.agents/rules.md](.agents/rules.md)), but a
+  `Co-authored-by` trailer for a coding agent is allowed here. The upstream `commit-msg` hook that rejects it is not
+  installed in this repository.
 - Follow `lint_options.yaml` (included by every `analysis_options.yaml`), especially single quotes, trailing commas, `child:` last, no `print()`, const/final
   preferences, and declared return types.
 - For CI parity, verify with `flutter pub get`, `flutter analyze --no-fatal-infos`, and

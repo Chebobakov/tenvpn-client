@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>FlClash</string>
+	<string>TENVPN</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -38,10 +38,10 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>tenvpn</string>
 				<string>clash</string>
 				<string>clashmeta</string>
 				<string>mihomo</string>
-				<string>flclash</string>
 			</array>
 		</dict>
 	</array>
@@ -50,11 +50,11 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>FlClash requests this permission to scan QR code.</string>
+	<string>TENVPN requests this permission to scan QR code.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>FlClash requests this permission to connect with servers on your local network.</string>
+	<string>TENVPN requests this permission to connect with servers on your local network.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>FlClash requests this permission to fetch Wi-Fi SSID.</string>
+	<string>TENVPN requests this permission to fetch Wi-Fi SSID.</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

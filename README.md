@@ -1,142 +1,77 @@
-<div>
+# TENVPN — клиент
 
-[**简体中文**](README_zh_CN.md)
+Приложение сервиса **TENVPN** для Android, Windows и iOS. Подключается по подписке TENVPN: VLESS (Reality, gRPC, WebSocket, xhttp с xmux), Hysteria2, AmneziaWG.
 
-</div>
+Это жёсткий форк [FlClash-Patched](https://github.com/chenx-dust/FlClash-Patched) (chenx-dust), который, в свою очередь, форк [FlClash](https://github.com/chen08209/FlClash) (chen08209). Ядро — [mihomo](https://github.com/MetaCubeX/mihomo) с патчами chenx-dust, наша копия — [Chebobakov/mihomo](https://github.com/Chebobakov/mihomo). Спасибо авторам всех трёх проектов.
 
-# FlClash Patched
+Исходный снимок: FlClash-Patched `v0.9.1` (коммит `aaf0755d`, 04.10.2026), ядро mihomo `v1.19.32` + 20 патчей chenx-dust (`f63b4a0a`).
 
-[![Downloads](https://img.shields.io/github/downloads/chenx-dust/FlClash-Patched/total?style=flat-square&logo=github)](https://github.com/chenx-dust/FlClash-Patched/releases/)[![Last Version](https://img.shields.io/github/release/chenx-dust/FlClash-Patched/all.svg?style=flat-square)](https://github.com/chenx-dust/FlClash-Patched/releases/)[![License](https://img.shields.io/github/license/chenx-dust/FlClash-Patched?style=flat-square)](LICENSE)
+## Лицензия
 
-A fork of [FlClash](https://github.com/chen08209/FlClash), with several bug fixes, power efficiency improvements and new features.
+[GPL-3.0](LICENSE), как у всех трёх апстримов. Исходники приложения и ядра открыты; каждый релиз собирается в GitHub Actions из этого репозитория.
 
-> [!CAUTION]
-> 如果您是中华人民共和国公民或者长期居住在中华人民共和国境内，请在使用前仔细阅读并理解 [免责声明](./README_zh_CN.md#免责声明) 中的内容。下载、安装或使用本项目即表示您同意免责声明中的条款，并承担由此产生的全部责任。
+## Документы
 
-## Features
+| Файл | О чём |
+|---|---|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | слои приложения, карта ключевых файлов |
+| [docs/core-update.md](docs/core-update.md) | как обновить ядро mihomo |
+| [docs/session-0-report.md](docs/session-0-report.md) | выбор базы, проверка подписки |
+| [docs/session-1-report.md](docs/session-1-report.md) | форк, ребрендинг, CI, протокольная матрица |
+| [CHANGELOG.md](CHANGELOG.md) | изменения по версиям |
 
-> [!WARNING]
-> This fork is maintained with a strong personal taste. Suggestions are welcome, but may not be adopted. The release cadence is relatively fast with force pushes, so staying up to date may come with issues, and compatibility with the original project is not guaranteed. Please ensure you have backup measures in place.
+Файлы `AGENTS.md`, `CLAUDE.md`, `.agents/` — документация апстрима для агентов, по-прежнему верна в части устройства кода.
 
-- Support iOS platform (requires an Apple Developer account to build)
-- Optimized experience on Linux (Pacman package distribution, fixed RPM dependencies, WM_CLASS issues)
-- Fixed bugs from upstream (startup time, window positioning, notifications)
-- Energy efficiency optimizations (improved Android Doze, unified UI timer suspend)
-- UI optimizations (proxy selection, log and connection filtering/sorting)
-- New features (Age-Key encryption support, Windows high-priority startup, Tailscale integration, etc.)
+## Сборка
 
-For more information, please check the details in [Applied Patches (#1)](https://github.com/chenx-dust/FlClash-Patched/issues/1)
+Нужны Flutter 3.47.x (CI — 3.47.6), Go 1.26+, Rust (rustup подтянет версию из `plugins/rust_api/rust/rust-toolchain.toml`), JDK 17, Android SDK с платформой `android-37.2` и NDK `30.0.16248370` (версии — в `android/gradle/libs.versions.toml`).
 
-# Original Introduction
+```bash
+git clone --recursive https://github.com/Chebobakov/tenvpn-client.git
+cd tenvpn-client
+dart setup.dart android --env stable          # APK в dist/
+dart setup.dart windows --env stable          # установщик .exe и portable .zip в dist/
+dart setup.dart ios --no-codesign             # только на macOS
+```
 
-A multi-platform proxy client based on mihomo, simple and easy to use, open-source and ad-free.
+`setup.dart` сам скачивает гео-базы (`assets/data/*`, ~100 МБ) — раньше это был отдельный шаг `dart run tool/geodata.dart`. **Если собирать в обход `setup.dart`** (`flutter build`, `flutter run`), гео-базы нужно положить самому — иначе ядро не стартует: `Unable to load asset: assets/data/GeoIP.metadb`, в интерфейсе «not initialized». Самый короткий способ — один раз прогнать `dart setup.dart <платформа>`.
 
-## Features
+Подпись Android: без ключа релизная сборка подписывается debug-ключом и получает суффикс `.dev`. С ключом — задать переменные окружения (или те же ключи в `android/local.properties`):
 
-✈️ Multi-platform: Android, iOS, Windows, macOS and Linux
+```bash
+export ANDROID_KEYSTORE_FILE=/path/to/tenvpn-release.jks
+export ANDROID_KEYSTORE_PASSWORD=...  ANDROID_KEY_ALIAS=tenvpn  ANDROID_KEY_PASSWORD=...
+```
 
-💻 Adaptive multiple screen sizes, Multiple color themes available
+### Ловушки Windows-хоста
 
-💡 Based on Material You Design, [Surfboard](https://github.com/getsurfboard/surfboard)-like UI
+Android в CI собирается на Linux, как у апстримов. Собирать APK на Windows можно, но только после правок ниже. Каждая стоила отдельной итерации сборки.
 
-☁️ Supports data sync via WebDAV
+1. **libclang для Rust-хелпера.** Хук `plugins/rust_api` ищет `libclang.dll` в `lib/` NDK. В NDK 28 его нет вовсе, в NDK 30 он лежит в `bin/`.
+2. **Встроенные заголовки clang.** libclang на Windows ищет их относительно вызывающего процесса, bindgen падает на `fatal error: 'stdbool.h' file not found`. `BINDGEN_EXTRA_CLANG_ARGS` не помогает (его перебивает таргетная переменная сборщика). Помогает копия `lib/clang/<N>/include` в `sysroot/usr/include`.
+3. **Обёртки clang без расширения.** Go-сборщик зовёт `aarch64-linux-android24-clang` и т. п., а на Windows это bash-скрипты: «%1 не является приложением Win32». Лечится жёсткими ссылками на `clang.exe` — clang берёт таргет из имени файла.
 
-✨ Support subscription link, Dark mode
-
-## Use
-
-### Linux
-
-⚠️ Make sure to install the following dependencies before using them
-
-   ```bash
-    sudo apt-get install libayatana-appindicator3-dev
-   ```
-
-### Android
-
-Support the following actions
+   Все три правки делает один скрипт (идемпотентный, оригиналы обёрток остаются как `*.sh.bak`):
 
    ```bash
-    cc.chenx.flclash.action.START
-    
-    cc.chenx.flclash.action.STOP
-    
-    cc.chenx.flclash.action.TOGGLE
+   bash tool/fix_windows_ndk.sh "$ANDROID_HOME/ndk/30.0.16248370"
    ```
 
-## Download
+4. **`sdkmanager` из cmdline-tools 23 сломан**: Gradle не может доставить NDK/платформу (`NTSTATUS 0xC0000409`, «Package ndk not found»). Ставить новым CLI: `"$ANDROID_HOME/cmdline-tools/latest/bin/android.exe" sdk install ndk/30.0.16248370 platforms/android-37.2`.
+5. **Каталог `Pub\Cache\bin` должен быть в PATH** — иначе `setup.dart` не найдёт упаковщик `flutter_distributor`, который сам же только что поставил: `export PATH="$PATH:$LOCALAPPDATA/Pub/Cache/bin"`.
+6. **Длинные пути git.** Упаковщик ставится в pub-кеш через git; без `core.longpaths` часть файлов не выписывается и сборка падает с `Method not found: 'AppPackagePublisherFirebaseHosting'`. Лечится `git config --global core.longpaths true` (или в конкретном чекауте pub-кеша + `git checkout -- .`).
+7. **Установщик `.exe`** собирает Inno Setup 6 — на раннерах GitHub он есть, локально его надо поставить; без него собирайте только `--targets zip`.
+8. **Не запускать две сборки одновременно** и не трогать дерево (включая `git fetch` в подмодуле ядра) во время сборки: хук пересчитывает отпечатки входов и падает с «File modified during build».
 
-<a href="https://github.com/chenx-dust/FlClash-Patched/releases"><img alt="Get it on GitHub" src="snapshots/get-it-on-github.svg" width="200px"/></a>
+## CI
 
-## Build
+`.github/workflows/build.yaml`:
 
-1. Update submodules
-   ```bash
-   git submodule update --init --recursive
-   ```
+- каждый пуш — проверки: анализ Dart, `go vet` обвязки ядра, тег ядра совпадает с подмодулем;
+- тег `v*` (или ручной запуск) — сборки: Android (ubuntu), Windows x64 (windows-2022, Inno Setup), iOS без подписи (macos); по тегу файлы прикладываются к GitHub Release.
 
-2. Install `Flutter` and `Golang` environment
+Секреты репозитория для подписи APK: `ANDROID_KEYSTORE_B64` (keystore в base64), `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`. Без них релиз не собирается — debug-подписанный APK наружу не уходит.
 
-3. Build Application
+## Глубокие ссылки
 
-    - android
-
-        1. Install `Android SDK`, `Android NDK`
-
-        2. Set `ANDROID_NDK` environment variable
-
-        3. Run build script
-
-           ```bash
-           dart setup.dart android
-           ```
-
-    - windows
-
-        1. Requires a Windows client
-
-        2. Install `GCC`, `Inno Setup`
-
-        3. Run build script
-
-           ```bash
-           dart setup.dart windows
-           ```
-
-    - linux
-
-        1. Requires a Linux client
-
-        2. Dependencies are auto-installed by setup script, or manually:
-           ```bash
-           sudo apt-get install -y libayatana-appindicator3-dev
-           ```
-
-        3. Run build script
-
-           ```bash
-           dart setup.dart linux
-           ```
-
-    - macOS
-
-        1. Requires a macOS client
-
-        2. Run build script
-
-           ```bash
-           dart setup.dart macos
-           ```
-
-    - iOS
-
-        1. Requires a macOS client
-
-        2. Configure Apple Developer capabilities, App Group and provisioning profiles for the app bundle and Network Extension bundle
-
-        3. Run build script
-
-           ```bash
-           dart setup.dart ios --ios-bundle-id com.example.flclash
-           ```
+`tenvpn://install-config?url=<ссылка на подписку>` — добавить подписку. Для совместимости принимаются и `clash://`, `clashmeta://`, `mihomo://` с тем же форматом.

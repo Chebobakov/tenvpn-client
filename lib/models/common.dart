@@ -347,8 +347,8 @@ extension TrackerInfosStateExt on TrackerInfosState {
   }
 }
 
-const defaultDavFileName = 'FlClash_{version}_{platform}_{date}_{time}.zip';
-const defaultDavDirectory = '/FlClash';
+const defaultDavFileName = 'TENVPN_{version}_{platform}_{date}_{time}.zip';
+const defaultDavDirectory = '/TENVPN';
 const _davPasswordFormatVersion = 'v1';
 const _davPasswordNonceLength = 16;
 const _davPasswordObfuscationMask = <int>[

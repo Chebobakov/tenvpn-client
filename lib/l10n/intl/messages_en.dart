@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
   static String m0(code) =>
-      "Windows refused to run FlClashCore.exe (error ${code}). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow FlClash in that policy or turn it off, then try again.";
+      "Windows refused to run TENVPNCore.exe (error ${code}). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow TENVPN in that policy or turn it off, then try again.";
 
   static String m1(url) => "Do you want to create a profile from ${url}?";
 
@@ -275,7 +275,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Backup and restore",
     ),
     "backupAndRestoreDesc": MessageLookupByLibrary.simpleMessage(
-      "Sync data via WebDAV or files",
+      "Back up and restore data via files",
     ),
     "backupDateDescription": MessageLookupByLibrary.simpleMessage(
       "Local date (YYYY-MM-DD)",
@@ -422,7 +422,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "core": MessageLookupByLibrary.simpleMessage("Core"),
     "coreBlockedByPolicyTip": m0,
     "coreBlockedBySmartAppControlTip": MessageLookupByLibrary.simpleMessage(
-      "Windows Smart App Control blocked FlClashCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start FlClash again. Smart App Control cannot be turned back on without reinstalling Windows.",
+      "Windows Smart App Control blocked TENVPNCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start TENVPN again. Smart App Control cannot be turned back on without reinstalling Windows.",
     ),
     "coreStatus": MessageLookupByLibrary.simpleMessage("Core status"),
     "country": MessageLookupByLibrary.simpleMessage("Region"),
@@ -456,7 +456,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "deleteMultipTip": m3,
     "deleteTip": m4,
     "desc": MessageLookupByLibrary.simpleMessage(
-      "A multi-platform proxy client based on mihomo, simple and easy to use, open-source and ad-free.",
+      "TENVPN client: VLESS, Hysteria2, AmneziaWG. Open source, GPL-3.0.",
     ),
     "descending": MessageLookupByLibrary.simpleMessage("Descending"),
     "destination": MessageLookupByLibrary.simpleMessage("Destination"),
@@ -717,7 +717,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "header": MessageLookupByLibrary.simpleMessage("Header"),
     "helperCorruptTip": MessageLookupByLibrary.simpleMessage(
-      "Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.",
+      "Helper service unavailable; TUN mode cannot be enabled. Reinstall TENVPN to restore it.",
     ),
     "hide": MessageLookupByLibrary.simpleMessage("Hide"),
     "hideFromList": MessageLookupByLibrary.simpleMessage("Hide from list"),

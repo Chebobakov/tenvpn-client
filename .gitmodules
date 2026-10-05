@@ -1,4 +1,4 @@
 [submodule "core/mihomo"]
 	path = core/mihomo
-	url = https://github.com/chenx-dust/mihomo.git
-	branch = FlClash
+	url = https://github.com/Chebobakov/mihomo.git
+	branch = tenvpn

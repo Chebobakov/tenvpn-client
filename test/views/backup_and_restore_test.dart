@@ -162,7 +162,7 @@ void main() {
             .text,
         defaultDavFileName,
       );
-      expect(find.textContaining('FlClash_0.8.92_android_'), findsOneWidget);
+      expect(find.textContaining('TENVPN_0.8.92_android_'), findsOneWidget);
     });
 
     testWidgets('fits a narrow screen with a long template', (tester) async {
@@ -190,21 +190,6 @@ void main() {
   });
 
   group('DAVDirectoryBrowserDialog', () {
-    testWidgets('directory editor safely disposes while the browser is open', (
-      tester,
-    ) async {
-      container.read(davSettingProvider.notifier).update((_) => _existing);
-      await pumpDialog(tester, const BackupAndRestore());
-      await tester.tap(find.text('Directory'));
-      await tester.pumpAndSettle();
-      await tester.tap(find.widgetWithText(TextButton, 'Browse'));
-      await tester.pumpAndSettle();
-      expect(find.byType(DAVDirectoryBrowserDialog), findsOneWidget);
-      await tester.pumpWidget(const SizedBox());
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
-    });
-
     testWidgets(
       'enters a folder, returns to the parent and chooses a directory',
       (tester) async {
@@ -298,44 +283,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     });
-
-    testWidgets(
-      'browse cancellation preserves the input and submit stores it',
-      (tester) async {
-        container.read(davSettingProvider.notifier).update((_) => _existing);
-        await pumpDialog(tester, const BackupAndRestore());
-        await tester.tap(find.text('Directory'));
-        await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextFormField), '/chosen');
-        expect(
-          tester.getTopLeft(find.widgetWithText(TextButton, 'Browse')).dx,
-          lessThan(
-            tester.getTopLeft(find.widgetWithText(TextButton, 'Submit')).dx,
-          ),
-        );
-        expect(
-          find.descendant(
-            of: find.byType(TextFormField),
-            matching: find.text('Browse'),
-          ),
-          findsNothing,
-        );
-        await tester.tap(find.widgetWithText(TextButton, 'Browse'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.widgetWithText(TextButton, 'Cancel'));
-        await tester.pumpAndSettle();
-        expect(
-          tester
-              .widget<TextFormField>(find.byType(TextFormField))
-              .controller!
-              .text,
-          '/chosen',
-        );
-        await tester.tap(find.widgetWithText(TextButton, 'Submit'));
-        await tester.pumpAndSettle();
-        expect(container.read(davSettingProvider)?.directory, '/chosen');
-      },
-    );
   });
 
   group('RemoteBackupsDialog', () {
@@ -627,73 +574,6 @@ void main() {
 
     testWidgets('returns every reset type for all data', (tester) async {
       expect(await openAndChoose(tester, 'All data'), allResetDataTypes);
-    });
-  });
-
-  group('WebDAV directory setting', () {
-    testWidgets('always offers reset and restores the default directory', (
-      tester,
-    ) async {
-      container
-          .read(davSettingProvider.notifier)
-          .update((_) => _existing.copyWith(directory: defaultDavDirectory));
-      await pumpDialog(tester, const BackupAndRestore());
-      await tester.tap(find.text('Directory'));
-      await tester.pumpAndSettle();
-      expect(find.widgetWithText(TextButton, 'Reset'), findsOneWidget);
-      await tester.enterText(find.byType(TextFormField), '/custom');
-      await tester.tap(find.widgetWithText(TextButton, 'Reset'));
-      await tester.pumpAndSettle();
-      expect(
-        container.read(davSettingProvider)?.directory,
-        defaultDavDirectory,
-      );
-      expect(find.byType(TextFormField), findsNothing);
-    });
-
-    testWidgets('stores a custom directory and permits the root', (
-      tester,
-    ) async {
-      container.read(davSettingProvider.notifier).update((_) => _existing);
-      await pumpDialog(tester, const BackupAndRestore());
-      expect(find.text('/archives/nightly'), findsOneWidget);
-      for (final directory in ['backups//daily/', '']) {
-        await tester.tap(find.text('Directory'));
-        await tester.pumpAndSettle();
-        await tester.enterText(find.byType(TextFormField), directory);
-        await tester.tap(find.widgetWithText(TextButton, 'Submit'));
-        await tester.pumpAndSettle();
-        expect(
-          container.read(davSettingProvider)?.directory,
-          directory.isEmpty ? '/' : '/backups/daily',
-        );
-      }
-      await tester.pumpWidget(const SizedBox());
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
-    });
-
-    testWidgets('rejects traversal and cancel keeps the directory', (
-      tester,
-    ) async {
-      container.read(davSettingProvider.notifier).update((_) => _existing);
-      await pumpDialog(tester, const BackupAndRestore());
-      await tester.tap(find.text('Directory'));
-      await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextFormField), '../backup');
-      await tester.tap(find.widgetWithText(TextButton, 'Submit'));
-      await tester.pumpAndSettle();
-      expect(find.byType(TextFormField), findsOneWidget);
-      expect(
-        container.read(davSettingProvider)?.directory,
-        '/archives/nightly',
-      );
-      await tester.tapAt(const Offset(10, 10));
-      await tester.pumpAndSettle();
-      expect(
-        container.read(davSettingProvider)?.directory,
-        '/archives/nightly',
-      );
     });
   });
 

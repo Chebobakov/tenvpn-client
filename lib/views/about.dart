@@ -98,8 +98,14 @@ class AboutView extends ConsumerWidget {
               _buildLinkItem(
                 icon: Symbols.memory,
                 title: appLocalizations.core,
-                url: 'https://github.com/chenx-dust/mihomo/tree/FlClash',
-                label: 'Github: chenx-dust/mihomo',
+                url: 'https://github.com/$coreRepository',
+                label: 'Github: $coreRepository',
+              ),
+              _buildLinkItem(
+                icon: Symbols.fork_right,
+                title: 'FlClash-Patched',
+                url: 'https://github.com/$upstreamRepository',
+                label: 'Github: $upstreamRepository',
               ),
             ],
           ),
@@ -152,10 +158,6 @@ class _AboutHero extends StatelessWidget {
                 TextSpan(
                   text: appName,
                   style: TextStyle(fontWeight: FontWeight.w700),
-                ),
-                TextSpan(
-                  text: ' Patched',
-                  style: TextStyle(fontWeight: FontWeight.w100),
                 ),
               ],
             ),

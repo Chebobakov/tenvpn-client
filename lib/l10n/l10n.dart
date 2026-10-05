@@ -1045,10 +1045,10 @@ class AppLocalizations {
     );
   }
 
-  /// `A multi-platform proxy client based on mihomo, simple and easy to use, open-source and ad-free.`
+  /// `TENVPN client: VLESS, Hysteria2, AmneziaWG. Open source, GPL-3.0.`
   String get desc {
     return Intl.message(
-      'A multi-platform proxy client based on mihomo, simple and easy to use, open-source and ad-free.',
+      'TENVPN client: VLESS, Hysteria2, AmneziaWG. Open source, GPL-3.0.',
       name: 'desc',
       desc: '',
       args: [],
@@ -4030,10 +4030,10 @@ class AppLocalizations {
     );
   }
 
-  /// `Sync data via WebDAV or files`
+  /// `Back up and restore data via files`
   String get backupAndRestoreDesc {
     return Intl.message(
-      'Sync data via WebDAV or files',
+      'Back up and restore data via files',
       name: 'backupAndRestoreDesc',
       desc: '',
       args: [],
@@ -4250,30 +4250,30 @@ class AppLocalizations {
     );
   }
 
-  /// `Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.`
+  /// `Helper service unavailable; TUN mode cannot be enabled. Reinstall TENVPN to restore it.`
   String get helperCorruptTip {
     return Intl.message(
-      'Helper service unavailable; TUN mode cannot be enabled. Reinstall FlClash to restore it.',
+      'Helper service unavailable; TUN mode cannot be enabled. Reinstall TENVPN to restore it.',
       name: 'helperCorruptTip',
       desc: '',
       args: [],
     );
   }
 
-  /// `Windows refused to run FlClashCore.exe (error {code}). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow FlClash in that policy or turn it off, then try again.`
+  /// `Windows refused to run TENVPNCore.exe (error {code}). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow TENVPN in that policy or turn it off, then try again.`
   String coreBlockedByPolicyTip(Object code) {
     return Intl.message(
-      'Windows refused to run FlClashCore.exe (error $code). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow FlClash in that policy or turn it off, then try again.',
+      'Windows refused to run TENVPNCore.exe (error $code). An app control policy such as Smart App Control or AppLocker blocks unsigned programs; allow TENVPN in that policy or turn it off, then try again.',
       name: 'coreBlockedByPolicyTip',
       desc: '',
       args: [code],
     );
   }
 
-  /// `Windows Smart App Control blocked FlClashCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start FlClash again. Smart App Control cannot be turned back on without reinstalling Windows.`
+  /// `Windows Smart App Control blocked TENVPNCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start TENVPN again. Smart App Control cannot be turned back on without reinstalling Windows.`
   String get coreBlockedBySmartAppControlTip {
     return Intl.message(
-      'Windows Smart App Control blocked FlClashCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start FlClash again. Smart App Control cannot be turned back on without reinstalling Windows.',
+      'Windows Smart App Control blocked TENVPNCore.exe because it is not signed. Open Windows Security → App & browser control → Smart App Control settings, choose Off, then start TENVPN again. Smart App Control cannot be turned back on without reinstalling Windows.',
       name: 'coreBlockedBySmartAppControlTip',
       desc: '',
       args: [],

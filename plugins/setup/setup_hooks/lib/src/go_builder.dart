@@ -14,11 +14,16 @@ import 'util.dart';
 
 final _log = Logger('go_builder');
 
+const coreVersionSymbol = 'github.com/metacubex/mihomo/constant.Version';
+
 String _resolveGoLdflags(Target target, BuildConfig config) {
+  final base = config.coreVersion.isEmpty
+      ? config.goLdflags
+      : '${config.goLdflags} -X $coreVersionSymbol=${config.coreVersion}';
   if (target.goos != 'android' || !target.isLib) {
-    return config.goLdflags;
+    return base;
   }
-  return '${config.goLdflags} -extldflags -Wl,-z,max-page-size=16384';
+  return '$base -extldflags -Wl,-z,max-page-size=16384';
 }
 
 String _resolveIosSdkPath() {

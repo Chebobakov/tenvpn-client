@@ -10,6 +10,7 @@ class BuildConfig {
   const BuildConfig({
     required this.tags,
     required this.goLdflags,
+    required this.coreVersion,
     required this.coreDir,
     required this.coreName,
     required this.libName,
@@ -20,6 +21,9 @@ class BuildConfig {
 
   final String tags;
   final String goLdflags;
+
+  /// Tag of the pinned core in Chebobakov/mihomo, stamped into the binary.
+  final String coreVersion;
   final String coreDir;
   final String coreName;
   final String libName;
@@ -30,12 +34,13 @@ class BuildConfig {
   static const _defaults = BuildConfig(
     tags: 'with_gvisor',
     goLdflags: '-w -s',
+    coreVersion: '',
     coreDir: 'core',
-    coreName: 'FlClashCore',
+    coreName: 'TENVPNCore',
     libName: 'libclash',
     outputDir: 'libclash',
     helperDir: 'services/helper',
-    helperName: 'FlClashHelperService',
+    helperName: 'TENVPNHelperService',
   );
 
   static BuildConfig load({required String rootDir}) {
@@ -49,6 +54,7 @@ class BuildConfig {
     return BuildConfig(
       tags: yaml['tags'] as String? ?? _defaults.tags,
       goLdflags: yaml['go_ldflags'] as String? ?? _defaults.goLdflags,
+      coreVersion: yaml['core_version'] as String? ?? _defaults.coreVersion,
       coreDir: yaml['core_dir'] as String? ?? _defaults.coreDir,
       coreName: yaml['core_name'] as String? ?? _defaults.coreName,
       libName: yaml['lib_name'] as String? ?? _defaults.libName,
@@ -61,6 +67,7 @@ class BuildConfig {
   Map<String, String> toFingerprintMap() => {
     'tags': tags,
     'go_ldflags': goLdflags,
+    'core_version': coreVersion,
     'core_dir': coreDir,
     'core_name': coreName,
     'lib_name': libName,

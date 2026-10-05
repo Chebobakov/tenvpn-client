@@ -9,8 +9,8 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:material_ui/material_ui.dart';
 
-const appName = 'FlClash';
-const appHelperService = 'FlClashHelperService';
+const appName = 'TENVPN';
+const appHelperService = 'TENVPNHelperService';
 const coreManifestName = 'manifest.json';
 const coreName = 'clash.meta';
 const browserUa =
@@ -87,7 +87,9 @@ const configKey = 'config';
 const systemDnsRecordKey = 'system_dns_record';
 const defaultSystemDnsFallback = '223.5.5.5';
 const double dialogCommonWidth = 300;
-const repository = 'chenx-dust/FlClash-Patched';
+const repository = 'Chebobakov/tenvpn-client';
+const coreRepository = 'Chebobakov/mihomo';
+const upstreamRepository = 'chenx-dust/FlClash-Patched';
 const maxMobileWidth = 600;
 const maxLaptopWidth = 840;
 const defaultTestUrl = 'https://www.gstatic.com/generate_204';

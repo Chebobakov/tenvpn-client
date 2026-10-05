@@ -34,10 +34,10 @@
 			<string></string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>tenvpn</string>
 				<string>clash</string>
 				<string>clashmeta</string>
 				<string>mihomo</string>
-				<string>flclash</string>
 			</array>
 		</dict>
 	</array>

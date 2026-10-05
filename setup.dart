@@ -415,7 +415,7 @@ Future<int> _package(
   if (platform == 'ios' && iosNoSign) {
     return packageIOSNoSign(
       rootDir: rootDir,
-      appBundleId: iosBundleId ?? 'cc.chenx.flclash',
+      appBundleId: iosBundleId ?? 'com.tenvpn.app',
       iosDevelopmentTeam: iosDevelopmentTeam,
       verbose: verbose,
     );
@@ -429,7 +429,8 @@ Future<int> _package(
     'git',
     'https://github.com/chenx-dust/flutter_distributor.git',
     '--git-ref',
-    'FlClash',
+    // Pinned: the fork's FlClash branch is force-pushed.
+    'c69667454c30dab80dac27258eb28c4236824550',
     '--git-path',
     'packages/flutter_distributor',
   ]);
@@ -612,7 +613,7 @@ Future<int> packageIOSNoSign({
     final outputDir = Directory(p.join(rootDir, 'dist'));
     await outputDir.create(recursive: true);
     final output = File(
-      p.join(outputDir.path, 'FlClash-$version-ios-arm64-unsigned.ipa'),
+      p.join(outputDir.path, 'TENVPN-$version-ios-arm64-unsigned.ipa'),
     );
     if (await output.exists()) {
       await output.delete();

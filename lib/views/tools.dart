@@ -38,11 +38,7 @@ class _ToolViewState extends ConsumerState<ToolsView> {
   }
 
   List<Widget> _otherItems(bool enableDeveloperMode) {
-    return [
-      const _DisclaimerItem(),
-      if (enableDeveloperMode) const _DeveloperItem(),
-      const _InfoItem(),
-    ];
+    return [if (enableDeveloperMode) const _DeveloperItem(), const _InfoItem()];
   }
 
   List<Widget> _settingItems() {
@@ -228,24 +224,6 @@ class _AdvancedConfigItem extends StatelessWidget {
       title: Text(context.appLocalizations.advancedConfig),
       subtitle: Text(context.appLocalizations.advancedConfigDesc),
       widget: const AdvancedConfigView(),
-    );
-  }
-}
-
-class _DisclaimerItem extends ConsumerWidget {
-  const _DisclaimerItem();
-
-  @override
-  Widget build(BuildContext context, ref) {
-    return ListItem(
-      leading: const Icon(Symbols.gavel),
-      title: Text(context.appLocalizations.disclaimer),
-      onTap: () async {
-        final isDisclaimerAccepted = await dialogs.showDisclaimer();
-        if (!isDisclaimerAccepted) {
-          await ref.read(systemActionProvider.notifier).handleExit();
-        }
-      },
     );
   }
 }

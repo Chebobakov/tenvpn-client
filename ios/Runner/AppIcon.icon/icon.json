@@ -1,6 +1,6 @@
 {
   "fill": {
-    "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+    "solid": "srgb:0.00000,0.00000,0.00000,1.00000"
   },
   "groups": [
     {
@@ -12,7 +12,7 @@
           "image-name": "icon.svg",
           "name": "icon",
           "position": {
-            "scale": 1.3659999999999999,
+            "scale": 1.0,
             "translation-in-points": [
               0,
               0

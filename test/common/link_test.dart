@@ -34,7 +34,7 @@ void main() {
   test('an install-config link reports its url', () async {
     await listen();
 
-    await emit('flclash://install-config?url=https://example.com/a.yaml');
+    await emit('tenvpn://install-config?url=https://example.com/a.yaml');
 
     expect(received, ['https://example.com/a.yaml']);
   });
@@ -42,7 +42,7 @@ void main() {
   test('an install-config link without a url is ignored', () async {
     await listen();
 
-    await emit('flclash://install-config');
+    await emit('tenvpn://install-config');
 
     expect(received, isEmpty);
   });
@@ -63,7 +63,7 @@ void main() {
 
     expect(linkManager.subscription, isNot(same(first)));
 
-    await emit('flclash://install-config?url=https://example.com/a.yaml');
+    await emit('tenvpn://install-config?url=https://example.com/a.yaml');
 
     expect(received, ['https://example.com/a.yaml']);
   });
@@ -73,7 +73,7 @@ void main() {
     () async {
       linkManager.seedInitialLink([
         '--verbose',
-        'flclash://install-config?url=https://example.com/a.yaml',
+        'tenvpn://install-config?url=https://example.com/a.yaml',
       ]);
 
       expect(received, isEmpty);
@@ -101,7 +101,7 @@ void main() {
 
     linkManager.destroy();
     linkManager.destroy();
-    await emit('flclash://install-config?url=https://example.com/a.yaml');
+    await emit('tenvpn://install-config?url=https://example.com/a.yaml');
 
     expect(linkManager.subscription, isNull);
     expect(received, isEmpty);

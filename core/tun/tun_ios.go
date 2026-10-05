@@ -61,7 +61,7 @@ func Start(fd int, config Options) *sing_tun.Listener {
 
 	options := LC.Tun{
 		Enable:                 true,
-		Device:                 "FlClash",
+		Device:                 "TENVPN",
 		Stack:                  tunStack,
 		RecvMsgX:               config.RecvMsgX,
 		SendMsgX:               config.SendMsgX,
